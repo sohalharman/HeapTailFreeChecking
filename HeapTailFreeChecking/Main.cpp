@@ -35,6 +35,7 @@ BYTE* GetTailSequence(uintptr_t ProcessHeap, uintptr_t Offset, uintptr_t size) {
 
 int main() {
     BOOL isDebugged = false;
+    HEAP_ENTRY HeapEntry = { 0 };
     //Get the default heap
     uintptr_t pPEB = 0;
     _asm {
@@ -54,7 +55,6 @@ int main() {
     while (true) {
         uintptr_t EncodedHeapEntry1 = *reinterpret_cast<uintptr_t*>(ProcessHeap + Offset);
         uintptr_t EncodedHeapEntry2 = *reinterpret_cast<uintptr_t*>(ProcessHeap + 0x4 + Offset);
-        HEAP_ENTRY HeapEntry = { 0 };
         *reinterpret_cast<uintptr_t*>(&HeapEntry) = EncodedHeapEntry1 ^ Encoding1;
         *(reinterpret_cast<uintptr_t*>(&HeapEntry) + 1) = EncodedHeapEntry2 ^ Encoding2;
         GetDecodedHeapEntry(&HeapEntry, 0x8);                              // For 64-bit system on Windows 11 Granularity = 0x8 bytes
