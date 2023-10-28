@@ -22,11 +22,12 @@ void GetDecodedHeapEntry(PHEAP_ENTRY HeapEntry, uintptr_t Granularity) {
 }
 
 BYTE* GetTailSequence(uintptr_t ProcessHeap, uintptr_t Offset, uintptr_t size) {
-    BYTE* pTailSequenceStart = reinterpret_cast<BYTE*>(ProcessHeap + Offset + size - 0x18);
+    BYTE* pTailSequenceStart = reinterpret_cast<BYTE*>(ProcessHeap + Offset + size - 0x24);
     int i = 0;
     for (i = 0; i != 0x30; i++) {
         if (*(pTailSequenceStart + i) == 0xab) {
-            break;
+            if(*(pTailSequenceStart + i + 1) == 0xab)
+                break;
         }
     }
     return pTailSequenceStart + i;
